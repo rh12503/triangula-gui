@@ -3,3 +3,5 @@ Triangula.rc
 Triangula-res.syso
 Triangula.exe.manifest
 node_modules
+.DS_Store
+build/
