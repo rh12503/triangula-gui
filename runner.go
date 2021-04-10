@@ -36,7 +36,7 @@ type Runner struct {
 	running      bool // Indicates if the algorithm is running or not
 	runningMutex sync.Mutex
 
-	stopped      bool // Indicates if the algorithm is stopped or not. stopped doesn't mean !running as the algorithm could be paused
+	stopped      bool // Indicates if the algorithm is stopped or not. !stopped doesn't mean running as the algorithm could be paused
 	stoppedMutex sync.Mutex
 
 	frameTime int // The increment between each frame rendered
@@ -93,9 +93,14 @@ func (r *Runner) Run(mutations int, mutationAmount float64, numPoints, populatio
 // Stop stops the algorithm
 func (r *Runner) Stop() {
 	r.runningMutex.Lock()
-	r.running = false
-	r.runningMutex.Unlock()
 	r.stopped = true
+	if !r.running {
+		r.runtime.Events.Emit("resumed")
+		r.runtime.Events.Emit("stopped")
+	} else {	
+		r.running = false
+	}
+	r.runningMutex.Unlock()
 }
 
 // Running returns if the algorithm is running or not
