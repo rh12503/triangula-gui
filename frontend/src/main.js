@@ -264,20 +264,23 @@ async function start() {
 
     document.getElementById("select").ondrop = function (event) {
         event.preventDefault();
-        if (event.dataTransfer && event.dataTransfer.files) {
-            let name = event.dataTransfer.files[0].name;
-
-            if (event.dataTransfer.files[0].type == "image/png" || event.dataTransfer.files[0].type == "image/jpeg") {
-                var reader = new FileReader();
-                reader.onload = function () {
-                    let data = reader.result.replace(/^[^_]*,/, "");
-                    backend.Runner.LoadImage(name, data, reader.result.match(/^[^_]*,/)[0]);
-                };
-                reader.readAsDataURL(event.dataTransfer.files[0]);
-            }
-        }
-
         event.target.classList.remove("over");
+        
+        try {
+            if (event.dataTransfer && event.dataTransfer.files) {
+                let name = event.dataTransfer.files[0].name;
+
+                if (event.dataTransfer.files[0].type == "image/png" || event.dataTransfer.files[0].type == "image/jpeg") {
+                    var reader = new FileReader();
+                    reader.onload = function () {
+                        let data = reader.result.replace(/^[^_]*,/, "");
+                        backend.Runner.LoadImage(name, data, reader.result.match(/^[^_]*,/)[0]);
+                    };
+                    reader.readAsDataURL(event.dataTransfer.files[0]);
+                }
+            }
+        } catch (e) {}
+
     };
 
     document.getElementById("select").onclick = () => backend.Runner.SelectImage();
