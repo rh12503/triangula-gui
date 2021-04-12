@@ -3,6 +3,8 @@ github.com/Masterminds/semver v1.4.2/go.mod h1:MB6lktGJrhw8PrUyiEoblNEGEQ+RzHPF0
 github.com/Netflix/go-expect v0.0.0-20180615182759-c93bf25de8e8/go.mod h1:oX5x61PbNXchhh0oikYAH+4Pcfw5LKv21+Jnpr6r6Pc=
 github.com/RH12503/Triangula v0.0.0-20210403053428-9e3278d52f99 h1:TNflT+jHxG+lOdByuz3qAog08qrYZlaSKj5/BfczFJY=
 github.com/RH12503/Triangula v0.0.0-20210403053428-9e3278d52f99/go.mod h1:B/RW75xKLQvknVVd1S0I3zm5uA4keR7ln2xnJkrzqSk=
+github.com/RH12503/Triangula v0.0.0-20210410100935-f0ae77084aff h1:gsCb4pbGKpMCF4p0FQy7zxKQIAccqMDF/iopCOLR0ls=
+github.com/RH12503/Triangula v0.0.0-20210410100935-f0ae77084aff/go.mod h1:B/RW75xKLQvknVVd1S0I3zm5uA4keR7ln2xnJkrzqSk=
 github.com/abadojack/whatlanggo v1.0.1 h1:19N6YogDnf71CTHm3Mp2qhYfkRdyvbgwWdd2EPxJRG4=
 github.com/abadojack/whatlanggo v1.0.1/go.mod h1:66WiQbSbJBIlOZMsvbKe5m6pzQovxCH9B/K8tQB2uoc=
 github.com/davecgh/go-spew v1.1.0/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=

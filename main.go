@@ -21,7 +21,6 @@ func main() {
 		Title:  "Triangula",
 		JS:     js,
 		CSS:    css,
-		Colour: "rgb(225,225,225)",
 		Resizable: true,
 		MinWidth: 580,
 		MinHeight: 426,

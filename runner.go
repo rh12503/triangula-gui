@@ -39,6 +39,8 @@ type Runner struct {
 	stopped      bool // Indicates if the algorithm is stopped or not. !stopped doesn't mean running as the algorithm could be paused
 	stoppedMutex sync.Mutex
 
+	tempPauseMutex sync.Mutex // Used to indicate for the algorithm to temporarily pause.
+
 	frameTime int // The increment between each frame rendered
 
 	image     image.Image // The image selected
@@ -84,7 +86,7 @@ func (r *Runner) Run(mutations int, mutationAmount float64, numPoints, populatio
 		r.frameTime = frameTime
 
 
-		r.Start()
+		r.StartAlgorithm()
 
 		r.runtime.Events.Emit("running") // Notify frontend
 	}
@@ -163,7 +165,10 @@ func (r *Runner) SaveSVG() error {
 	}
 
 	name := r.runtime.Dialog.SelectSaveFile("Export to SVG", "*.svg")
-	err := export.WriteSVG(name, r.algorithm.Best(), r.normImage)
+	r.tempPauseMutex.Lock()
+	best := r.algorithm.Best().Copy()
+	r.tempPauseMutex.Unlock()
+	err := export.WriteSVG(name, best, r.normImage)
 
 	return err
 }
@@ -177,20 +182,23 @@ func (r *Runner) SavePNG(scale float64, effect int) error {
 	name := r.runtime.Dialog.SelectSaveFile("Export to PNG", "*.png")
 
 	var err error
+	r.tempPauseMutex.Lock()
+	best := r.algorithm.Best().Copy()
+	r.tempPauseMutex.Unlock()
 
 	if effect == none {
-		err = export.WritePNG(name, r.algorithm.Best(), r.normImage, scale)
+		err = export.WritePNG(name, best, r.normImage, scale)
 	} else if effect == gradient {
-		err = export.WriteEffectPNG(name, r.algorithm.Best(), r.normImage, scale, true)
+		err = export.WriteEffectPNG(name, best, r.normImage, scale, true)
 	} else if effect == split {
-		err = export.WriteEffectPNG(name, r.algorithm.Best(), r.normImage, scale, false)
+		err = export.WriteEffectPNG(name, best, r.normImage, scale, false)
 	}
 
 	return err
 }
 
-// Start starts the algorithm if it isn't already started
-func (r *Runner) Start() {
+// StartAlgorithm starts the algorithm if it isn't already started
+func (r *Runner) StartAlgorithm() {
 	r.runningMutex.Lock()
 	r.running = true
 	r.runningMutex.Unlock()
@@ -209,7 +217,9 @@ func (r *Runner) Start() {
 			r.runtime.Events.Emit("stats", r.algorithm.Stats())
 			ti := time.Now()
 			for time.Since(ti).Milliseconds() < int64(r.frameTime) {
+				r.tempPauseMutex.Lock()
 				r.algorithm.Step()
+				r.tempPauseMutex.Unlock()
 			}
 		}
 		if r.stopped {
@@ -230,7 +240,7 @@ func (r *Runner) TogglePause() {
 		r.runningMutex.Unlock()
 		r.runtime.Events.Emit("paused")
 	} else {
-		r.Start()
+		r.StartAlgorithm()
 		r.runtime.Events.Emit("resumed")
 	}
 }
