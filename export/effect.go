@@ -26,7 +26,7 @@ func WriteEffectPNG(filename string, points normgeom.NormPointGroup, img image.D
 	dc.DrawRectangle(0, 0, float64(w), float64(h))
 	dc.Fill()
 
-	triangles, _ := triangulation.Triangulate(points, imageW, imageH)
+	triangles := triangulation.Triangulate(points, imageW, imageH)
 	triangleData := render.TrianglesOnImage(triangles, img)
 
 	for i, _ := range triangleData {

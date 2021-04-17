@@ -20,7 +20,7 @@ func WritePNG(filename string, points normgeom.NormPointGroup, img image.Data, p
 	h := int(math.Round(float64(imageH) * pixelScale))
 
 	dc := gg.NewContext(w, h)
-	triangles, _ := triangulation.Triangulate(points, imageW, imageH)
+	triangles := triangulation.Triangulate(points, imageW, imageH)
 	triangleData := render.TrianglesOnImage(triangles, img)
 
 

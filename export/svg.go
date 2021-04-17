@@ -29,7 +29,7 @@ func WriteSVG(filename string, points normgeom.NormPointGroup, img image.Data) e
 	}
 
 	w, h := img.Size()
-	triangles, _ := triangulation.Triangulate(points, w, h)
+	triangles := triangulation.Triangulate(points, w, h)
 	triangleData := render.TrianglesOnImage(triangles, img)
 
 	writer := bufio.NewWriter(outFile)
