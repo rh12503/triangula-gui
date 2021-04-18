@@ -205,7 +205,7 @@ func (r *Runner) StartAlgorithm() {
 	go func() {
 		for r.Running() {
 			w, h := r.normImage.Size()
-			triangles, _ := triangulation.Triangulate(r.algorithm.Best(), w, h)
+			triangles := triangulation.Triangulate(r.algorithm.Best(), w, h)
 			triangleData := render.TrianglesOnImage(triangles, r.normImage)
 
 			// Send rendering data to the frontend
