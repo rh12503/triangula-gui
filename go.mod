@@ -9,4 +9,4 @@ require (
 	github.com/wailsapp/wails v1.16.1-pre2
 )
 
-replace github.com/wailsapp/wails v1.16.1-pre2 => /Users/ryanhayashi/wails
+

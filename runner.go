@@ -30,8 +30,8 @@ const (
 )
 
 type Runner struct {
-	algorithm    algorithm.Algorithm // The algorithm being used
-	runtime      *wails.Runtime
+	algorithm algorithm.Algorithm // The algorithm being used
+	runtime   *wails.Runtime
 
 	running      bool // Indicates if the algorithm is running or not
 	runningMutex sync.Mutex
@@ -85,7 +85,6 @@ func (r *Runner) Run(mutations int, mutationAmount float64, numPoints, populatio
 		r.stopped = false
 		r.frameTime = frameTime
 
-
 		r.StartAlgorithm()
 
 		r.runtime.Events.Emit("running") // Notify frontend
@@ -99,7 +98,7 @@ func (r *Runner) Stop() {
 	if !r.running {
 		r.runtime.Events.Emit("resumed")
 		r.runtime.Events.Emit("stopped")
-	} else {	
+	} else {
 		r.running = false
 	}
 	r.runningMutex.Unlock()
