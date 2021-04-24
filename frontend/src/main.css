@@ -534,6 +534,7 @@ button:focus {
   display: inline-block;
   position: relative;
   height: 100%;
+  z-index: 99;
 }
 
 #export:hover #exportinput {
