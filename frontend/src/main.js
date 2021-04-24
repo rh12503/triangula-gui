@@ -282,6 +282,8 @@ async function start() {
 
     document.getElementById("select").ondrop = function (event) {
         event.preventDefault();
+        event.target.classList.remove("over");
+
         if (event.dataTransfer && event.dataTransfer.files) {
             let name = event.dataTransfer.files[0].name;
 
@@ -294,8 +296,6 @@ async function start() {
                 reader.readAsDataURL(event.dataTransfer.files[0]);
             }
         }
-
-        event.target.classList.remove("over");
     };
 
     document.getElementById("select").onclick = () => backend.Runner.SelectImage();
@@ -307,10 +307,11 @@ async function start() {
         if (document.getElementById("png").classList.contains("selected")) {
             var effect = 0;
             if (document.getElementById("gradient").classList.contains("selected")) {
-
+                effect = 1;
+            } else if (document.getElementById("split").classList.contains("selected")) {
+                effect = 2;
             }
-
-            backend.Runner.SavePNG(parseFloat(document.getElementById("scale").value), parseInt(document.getElementById("effect").value));
+            backend.Runner.SavePNG(parseFloat(document.getElementById("scale").value), effect);
         } else {
             backend.Runner.SaveSVG();
         }
@@ -355,7 +356,7 @@ async function start() {
 
         let cW = canvas.width;
         let cH = canvas.height;
-        var ctx = canvas.getContext("2d", { alpha: false });
+        var ctx = canvas.getContext("2d", {alpha: false});
 
         if (window.devicePixelRatio > 1) {
             var canvasWidth = canvas.width;
