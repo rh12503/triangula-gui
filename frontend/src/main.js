@@ -69,6 +69,21 @@ function stop() {
     backend.Runner.Stop();
 }
 
+function updateCanvasSize(ratio) {
+    var canvas = document.getElementById("render");
+    var area = document.getElementById("renderarea");
+
+    var maxWidth = area.offsetWidth;
+    var maxHeight = area.offsetHeight;
+    if (maxWidth / maxHeight > ratio) {
+        canvas.width = maxHeight * ratio;
+        canvas.height = maxHeight;
+    } else {
+        canvas.width = maxWidth;
+        canvas.height = maxWidth / ratio;
+    }
+}
+
 async function start() {
     var app = document.getElementById('app');
     app.style.width = '100%';
@@ -208,8 +223,7 @@ async function start() {
                 </div>
             </div>
             <div id="renderarea">
-                <svg id="render" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-                </svg>
+                <canvas id="render"></canvas>
             </div>
         </div>
 	`
@@ -240,6 +254,10 @@ async function start() {
     wails.Events.On("paused", () => setPaused())
     wails.Events.On("resumed", () => setResumed())
 
+    updateCanvasSize(1);
+
+    window.addEventListener('resize', () => updateCanvasSize(1));
+
     document.getElementById("logo").setAttribute('draggable', false);
 
 
@@ -264,23 +282,20 @@ async function start() {
 
     document.getElementById("select").ondrop = function (event) {
         event.preventDefault();
-        event.target.classList.remove("over");
-        
-        try {
-            if (event.dataTransfer && event.dataTransfer.files) {
-                let name = event.dataTransfer.files[0].name;
+        if (event.dataTransfer && event.dataTransfer.files) {
+            let name = event.dataTransfer.files[0].name;
 
-                if (event.dataTransfer.files[0].type == "image/png" || event.dataTransfer.files[0].type == "image/jpeg") {
-                    var reader = new FileReader();
-                    reader.onload = function () {
-                        let data = reader.result.replace(/^[^_]*,/, "");
-                        backend.Runner.LoadImage(name, data, reader.result.match(/^[^_]*,/)[0]);
-                    };
-                    reader.readAsDataURL(event.dataTransfer.files[0]);
-                }
+            if (event.dataTransfer.files[0].type == "image/png" || event.dataTransfer.files[0].type == "image/jpeg") {
+                var reader = new FileReader();
+                reader.onload = function () {
+                    let data = reader.result.replace(/^[^_]*,/, "");
+                    backend.Runner.LoadImage(name, data, reader.result.match(/^[^_]*,/)[0]);
+                };
+                reader.readAsDataURL(event.dataTransfer.files[0]);
             }
-        } catch (e) {}
+        }
 
+        event.target.classList.remove("over");
     };
 
     document.getElementById("select").onclick = () => backend.Runner.SelectImage();
@@ -292,12 +307,10 @@ async function start() {
         if (document.getElementById("png").classList.contains("selected")) {
             var effect = 0;
             if (document.getElementById("gradient").classList.contains("selected")) {
-                effect = 1;
-            } else if (document.getElementById("split").classList.contains("selected")) {
-                effect = 2;
+
             }
 
-            backend.Runner.SavePNG(parseFloat(document.getElementById("scale").value), effect);
+            backend.Runner.SavePNG(parseFloat(document.getElementById("scale").value), parseInt(document.getElementById("effect").value));
         } else {
             backend.Runner.SaveSVG();
         }
@@ -336,18 +349,42 @@ async function start() {
     wails.Events.On("renderData", renderData => {
         let width = renderData.Width;
         let height = renderData.Height;
-        var svg = `<svg id="render" viewBox="0 0 ${width} ${height}"
- xmlns="http://www.w3.org/2000/svg" shape-rendering="crispEdges">`;
+
+        updateCanvasSize(width / height);
+        var canvas = document.getElementById("render");
+
+        let cW = canvas.width;
+        let cH = canvas.height;
+        var ctx = canvas.getContext("2d", { alpha: false });
+
+        if (window.devicePixelRatio > 1) {
+            var canvasWidth = canvas.width;
+            var canvasHeight = canvas.height;
+
+            canvas.width = canvasWidth * window.devicePixelRatio;
+            canvas.height = canvasHeight * window.devicePixelRatio;
+
+            canvas.style.width = canvasWidth + "px";
+            canvas.style.height = canvasHeight + "px";
+
+            ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
+        }
+
+        ctx.globalCompositeOperation = "lighter";
+
+        ctx.clearRect(0, 0, cW, cH);
+
         for (let tri of renderData.Data) {
             let c = tri.Color;
             let t = tri.Triangle.Points;
-
-            svg += `<polygon points="${t[0].X * width},${t[0].Y * height}
-${t[1].X * width},${t[1].Y * height} ${t[2].X * width},${t[2].Y * height}"
-fill="rgb(${c.R * 100}%, ${c.G * 100}%, ${c.B * 100}%)"/>`;
+            ctx.fillStyle = `rgb(${Math.round(c.R * 255)}, ${Math.round(c.G * 255)}, ${Math.round(c.B * 255)})`;
+            ctx.beginPath();
+            ctx.moveTo(Math.round(t[0].X * cW), Math.round(t[0].Y * cH));
+            ctx.lineTo(Math.round(t[1].X * cW), Math.round(t[1].Y * cH));
+            ctx.lineTo(Math.round(t[2].X * cW), Math.round(t[2].Y * cH));
+            ctx.closePath();
+            ctx.fill();
         }
-        svg += `</svg>`;
-        document.getElementById('renderarea').innerHTML = svg;
     });
 
     wails.Events.On("stats", stats => {

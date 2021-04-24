@@ -202,7 +202,8 @@ func (r *Runner) StartAlgorithm() {
 	r.running = true
 	r.runningMutex.Unlock()
 	go func() {
-		for r.Running() {
+		out:
+		for {
 			w, h := r.normImage.Size()
 			triangles := triangulation.Triangulate(r.algorithm.Best(), w, h)
 			triangleData := render.TrianglesOnImage(triangles, r.normImage)
@@ -214,11 +215,22 @@ func (r *Runner) StartAlgorithm() {
 				Data:   triangleData,
 			})
 			r.runtime.Events.Emit("stats", r.algorithm.Stats())
+
 			ti := time.Now()
+			statsTime := time.Now()
+
 			for time.Since(ti).Milliseconds() < int64(r.frameTime) {
 				r.tempPauseMutex.Lock()
 				r.algorithm.Step()
 				r.tempPauseMutex.Unlock()
+
+				if !r.Running() {
+					break out
+				}
+				if time.Since(statsTime).Milliseconds() < 200 { // Update stats at least 5 times per second
+					r.runtime.Events.Emit("stats", r.algorithm.Stats())
+					statsTime = time.Now()
+				}
 			}
 		}
 		if r.stopped {
