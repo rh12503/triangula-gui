@@ -3,6 +3,8 @@ github.com/Masterminds/semver v1.4.2/go.mod h1:MB6lktGJrhw8PrUyiEoblNEGEQ+RzHPF0
 github.com/Netflix/go-expect v0.0.0-20180615182759-c93bf25de8e8/go.mod h1:oX5x61PbNXchhh0oikYAH+4Pcfw5LKv21+Jnpr6r6Pc=
 github.com/RH12503/Triangula v0.0.0-20210417083912-bc0cc6b1c97b h1:/FChF7vv+fDQT+KpX9KYiyAEpSXJYE/yAtdt6g7d+Is=
 github.com/RH12503/Triangula v0.0.0-20210417083912-bc0cc6b1c97b/go.mod h1:ZCy13vX2yjlK7j5z20CVGZO0k5Sw2+8ONZ/uPc7XOQY=
+github.com/RH12503/Triangula v0.0.0-20210424034030-54f93f75f91d h1:dHEmAJcV1Seqp65KCCpi599A0BlnmQppjw/lwakIHyw=
+github.com/RH12503/Triangula v0.0.0-20210424034030-54f93f75f91d/go.mod h1:ZCy13vX2yjlK7j5z20CVGZO0k5Sw2+8ONZ/uPc7XOQY=
 github.com/abadojack/whatlanggo v1.0.1 h1:19N6YogDnf71CTHm3Mp2qhYfkRdyvbgwWdd2EPxJRG4=
 github.com/abadojack/whatlanggo v1.0.1/go.mod h1:66WiQbSbJBIlOZMsvbKe5m6pzQovxCH9B/K8tQB2uoc=
 github.com/davecgh/go-spew v1.1.0/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
@@ -36,8 +38,6 @@ github.com/konsorten/go-windows-terminal-sequences v1.0.2/go.mod h1:T0+1ngSBFLxv
 github.com/kr/pty v1.1.1/go.mod h1:pFQYn66WHrOpPYNljwOMqo10TkYh1fy3cYio2l3bCsQ=
 github.com/lazybeaver/xorshift v0.0.0-20170702203709-ce511d4823dd h1:TfmftEfB1zJiDTFi3Qw1xlbEbfJPKUhEDC19clfBMb8=
 github.com/lazybeaver/xorshift v0.0.0-20170702203709-ce511d4823dd/go.mod h1:qXyNSomGEqu0M7ewNl3CLgle09PFHk8++5NrBWCz7+Q=
-github.com/leaanthony/mewn v0.10.7 h1:jCcNJyIUOpwj+I5SuATvCugDjHkoo+j6ubEOxxrxmPA=
-github.com/leaanthony/mewn v0.10.7/go.mod h1:CRkTx8unLiSSilu/Sd7i1LwrdaAL+3eQ3ses99qGMEQ=
 github.com/leaanthony/slicer v1.4.0 h1:Q9u4w+UBU4WHjXnEDdz+eRLMKF/rnyosRBiqULnc1J8=
 github.com/leaanthony/slicer v1.4.0/go.mod h1:FwrApmf8gOrpzEWM2J/9Lh79tyq8KTX5AzRtwV7m4AY=
 github.com/leaanthony/spinner v0.5.3 h1:IMTvgdQCec5QA4qRy0wil4XsRP+QcG1OwLWVK/LPZ5Y=
@@ -76,8 +76,6 @@ github.com/stretchr/testify v1.4.0 h1:2E4SXV/wtOkTonXsotYi4li6zVWxYlZuYNCXe9XRJy
 github.com/stretchr/testify v1.4.0/go.mod h1:j7eGeouHqKxXV5pUuKE4zz7dFj8WfuZ+81PSLYec5m4=
 github.com/syossan27/tebata v0.0.0-20180602121909-b283fe4bc5ba h1:2DHfQOxcpWdGf5q5IzCUFPNvRX9Icf+09RvQK2VnJq0=
 github.com/syossan27/tebata v0.0.0-20180602121909-b283fe4bc5ba/go.mod h1:iLnlXG2Pakcii2CU0cbY07DRCSvpWNa7nFxtevhOChk=
-github.com/wailsapp/wails v1.16.3 h1:wuJJU9PnnrrDvhh+DTr1MfqUSR1PDR5H+RilM5Wwd7c=
-github.com/wailsapp/wails v1.16.3/go.mod h1:aADbAvTzZrKGd4Td7d1l4Dp5Hx7lLJEvVH7guIHoDf8=
 golang.org/x/crypto v0.0.0-20190123085648-057139ce5d2b/go.mod h1:6SG95UA2DQfeDnfUPMdvaQW0Q7yPrPDi9nlGo2tz2b4=
 golang.org/x/crypto v0.0.0-20190308221718-c2843e01d9a2/go.mod h1:djNgcEr1/C05ACkg1iLfiJU5Ep61QUkGW8qpdssI0+w=
 golang.org/x/crypto v0.0.0-20200622213623-75b288015ac9/go.mod h1:LzIPMQfyMNhhGPhUkYOs5KpL4U8rLKemX1yGLhDgUto=
