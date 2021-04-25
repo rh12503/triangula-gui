@@ -50,7 +50,7 @@ hr {
   font-size: 0;
 }
 
-#topbar.darkmode {
+.darkmode #topbar {
   background: rgb(34, 34, 34);
 }
 
@@ -79,7 +79,7 @@ hr {
   flex-direction: column;
 }
 
-#side.darkmode {
+.darkmode #side {
   background: #1f1f1f;
 }
 
@@ -135,7 +135,7 @@ hr {
   overflow: hidden;
 }
 
-#renderarea.darkmode {
+.darkmode #renderarea {
   background-color: #313131;
 }
 
@@ -145,7 +145,7 @@ hr {
   fill: #303d4e;
 }
 
-#logo.darkmode {
+.darkmode #logo {
   fill: white;
 }
 
@@ -182,7 +182,7 @@ img[src$=".gif"], img[src$=".png"] {
   text-shadow: none;
 }
 
-#titlecontent.darkmode {
+.darkmode #titlecontent {
   color: white;
 }
 
@@ -234,20 +234,20 @@ img[src$=".gif"], img[src$=".png"] {
   cursor: default;
 }
 
-#run.darkmode {
+.darkmode #run {
   background: rgb(22, 22, 22);
   box-shadow: none;
 }
 
-#run.darkmode:hover {
+.darkmode #run:hover {
   background: rgb(25, 25, 25);
 }
 
-#run.darkmode:active {
+.darkmode #run:active {
   background: rgb(15, 15, 15);
 }
 
-#run.darkmode:disabled {
+.darkmode #run:disabled {
   opacity: 0.7;
 }
 
@@ -277,20 +277,20 @@ img[src$=".gif"], img[src$=".png"] {
   cursor: default;
 }
 
-#save.darkmode {
+.darkmode #save {
   background: rgb(41, 41, 41);
   box-shadow: none;
 }
 
-#save.darkmode:hover {
+.darkmode #save:hover {
   background: rgb(37, 37, 37);
 }
 
-#save.darkmode:active {
+.darkmode #save:active {
   background: rgb(43, 43, 43);
 }
 
-#save.darkmode:disabled {
+.darkmode #save:disabled {
   opacity: 0.7;
 }
 
@@ -342,33 +342,33 @@ img[src$=".gif"], img[src$=".png"] {
   border-right: none;
 }
 
-.buttoningroup.darkmode {
+.darkmode .buttoningroup {
   background: transparent;
   color: white;
   border: 1px solid #707070;
   box-shadow: none;
 }
 
-.buttoningroup.darkmode:hover {
+.darkmode .buttoningroup:hover {
   background-color: rgb(33, 33, 33);
 }
 
-.buttoningroup.darkmode:active {
+.darkmode .buttoningroup:active {
   background-color: rgb(39, 39, 39);
 }
 
-.buttoningroup.darkmode.selected {
+.darkmode .buttoningroup.selected {
   background-color: #707070;
   border: 1px solid #707070;
   color: white;
 }
 
-.buttoningroup.darkmode.selected:active {
+.darkmode .buttoningroup.selected:active {
   background-color: #808080;
   border: 1px solid #808080;
 }
 
-.buttoningroup.darkmode:not(:last-child) {
+.darkmode .buttoningroup:not(:last-child) {
   border-right: none;
 }
 
@@ -433,29 +433,29 @@ img[src$=".gif"], img[src$=".png"] {
   background-image: linear-gradient(45deg, rgba(234, 234, 234, 1), rgba(240, 240, 240, 1), rgba(234, 234, 234, 1));
 }
 
-#select.darkmode {
+.darkmode #select {
   background: #161616;
   border: 1px solid rgb(58, 58, 58);
   box-shadow: none;
   color: white;
 }
 
-#select.darkmode.over {
+.darkmode #select.over {
   background: rgb(37, 37, 37);
   color: white;
 }
 
-#select.darkmode.selected {
+.darkmode #select.selected {
   color: white;
 }
 
-#select.darkmode:hover {
+.darkmode #select:hover {
   background: rgb(22, 22, 22);
   cursor: pointer;
   color: white;
 }
 
-#select.darkmode:active {
+.darkmode #select:active {
   background: rgb(32, 32, 32);
 }
 
@@ -528,20 +528,20 @@ button:focus {
   -moz-appearance: textfield;
 }
 
-.input.darkmode {
+.darkmode .input {
   background-color: #1f1f1f;
   border: 1px solid #494949;
   color: white;
 }
 
-.input.darkmode:focus {
+.darkmode .input:focus {
   color: #ffffff;
   outline: none;
   border: 1px solid #6b6b6b;
   box-shadow: none;
 }
 
-.input.darkmode:read-only {
+.darkmode .input:read-only {
   opacity: 0.7;
   color: white;
 }
@@ -562,7 +562,7 @@ button:focus {
   text-shadow: none;
 }
 
-.subhead.darkmode {
+.darkmode .subhead {
   color: white;
 }
 
@@ -577,7 +577,7 @@ button:focus {
   text-shadow: none;
 }
 
-.statsheader.darkmode {
+.darkmode .statsheader {
   color: white;
 }
 
@@ -589,7 +589,7 @@ button:focus {
   text-shadow: none;
 }
 
-.stats.darkmode {
+.darkmode .stats {
   color: white;
 }
 
@@ -632,17 +632,17 @@ button:focus {
   cursor: pointer;
 }
 
-.tab.darkmode {
+.darkmode .tab {
   color: white;
 }
 
-.tab.show.darkmode, .tab.show.darkmode:hover {
+.darkmode .tab.show, .darkmode .tab.show:hover {
   border-bottom: 2px solid #ffffff;
   color: #ffffff;
   cursor: auto;
 }
 
-.tab.darkmode:hover {
+.darkmode .tab:hover {
   color: rgb(226, 226, 226);
 }
 
@@ -667,7 +667,7 @@ button:focus {
   cursor: pointer;
 }
 
-.toptab.darkmode:hover {
+.darkmode .toptab:hover {
   background: #2e2e2e;
 }
 
@@ -675,7 +675,7 @@ button:focus {
   background-color: #34495e;
 }
 
-#export.darkmode:hover .toptab {
+.darkmode #export:hover .toptab {
   background: #2e2e2e;
 }
 
@@ -696,7 +696,7 @@ button:focus {
   border: 0px;
 }
 
-#exportinput.darkmode {
+.darkmode #exportinput {
   background: #161616;
 }
 
@@ -753,7 +753,7 @@ button:focus {
   overflow: hidden;
 }
 
-#info.darkmode {
+.darkmode #info {
   background: #161616;
   border: 1px solid rgb(58, 58, 58);
   box-shadow: none;
