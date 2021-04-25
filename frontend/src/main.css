@@ -50,6 +50,10 @@ hr {
   font-size: 0;
 }
 
+#topbar.darkmode {
+  background: rgb(34, 34, 34);
+}
+
 #topbar svg {
   display: block;
   margin: auto;
@@ -73,6 +77,10 @@ hr {
   max-width: 280px;
   display: flex;
   flex-direction: column;
+}
+
+#side.darkmode {
+  background: #1f1f1f;
 }
 
 .inputs {
@@ -127,9 +135,18 @@ hr {
   overflow: hidden;
 }
 
+#renderarea.darkmode {
+  background-color: #313131;
+}
+
 #logo {
   width: 23px;
   padding-right: 4px;
+  fill: #303d4e;
+}
+
+#logo.darkmode {
+  fill: white;
 }
 
 /* applies to GIF and PNG images; avoids blurry edges */
@@ -163,6 +180,10 @@ img[src$=".gif"], img[src$=".png"] {
   background: transparent;
   color: #2c3e50;
   text-shadow: none;
+}
+
+#titlecontent.darkmode {
+  color: white;
 }
 
 .controls {
@@ -213,6 +234,23 @@ img[src$=".gif"], img[src$=".png"] {
   cursor: default;
 }
 
+#run.darkmode {
+  background: rgb(22, 22, 22);
+  box-shadow: none;
+}
+
+#run.darkmode:hover {
+  background: rgb(25, 25, 25);
+}
+
+#run.darkmode:active {
+  background: rgb(15, 15, 15);
+}
+
+#run.darkmode:disabled {
+  opacity: 0.7;
+}
+
 #save {
   background-color: #34495e;
   color: white;
@@ -237,6 +275,23 @@ img[src$=".gif"], img[src$=".png"] {
 
 #save:disabled:hover {
   cursor: default;
+}
+
+#save.darkmode {
+  background: rgb(41, 41, 41);
+  box-shadow: none;
+}
+
+#save.darkmode:hover {
+  background: rgb(37, 37, 37);
+}
+
+#save.darkmode:active {
+  background: rgb(43, 43, 43);
+}
+
+#save.darkmode:disabled {
+  opacity: 0.7;
 }
 
 .buttongroup {
@@ -284,6 +339,36 @@ img[src$=".gif"], img[src$=".png"] {
 }
 
 .buttoningroup:not(:last-child) {
+  border-right: none;
+}
+
+.buttoningroup.darkmode {
+  background: transparent;
+  color: white;
+  border: 1px solid #707070;
+  box-shadow: none;
+}
+
+.buttoningroup.darkmode:hover {
+  background-color: rgb(33, 33, 33);
+}
+
+.buttoningroup.darkmode:active {
+  background-color: rgb(39, 39, 39);
+}
+
+.buttoningroup.darkmode.selected {
+  background-color: #707070;
+  border: 1px solid #707070;
+  color: white;
+}
+
+.buttoningroup.darkmode.selected:active {
+  background-color: #808080;
+  border: 1px solid #808080;
+}
+
+.buttoningroup.darkmode:not(:last-child) {
   border-right: none;
 }
 
@@ -348,6 +433,32 @@ img[src$=".gif"], img[src$=".png"] {
   background-image: linear-gradient(45deg, rgba(234, 234, 234, 1), rgba(240, 240, 240, 1), rgba(234, 234, 234, 1));
 }
 
+#select.darkmode {
+  background: #161616;
+  border: 1px solid rgb(58, 58, 58);
+  box-shadow: none;
+  color: white;
+}
+
+#select.darkmode.over {
+  background: rgb(37, 37, 37);
+  color: white;
+}
+
+#select.darkmode.selected {
+  color: white;
+}
+
+#select.darkmode:hover {
+  background: rgb(22, 22, 22);
+  cursor: pointer;
+  color: white;
+}
+
+#select.darkmode:active {
+  background: rgb(32, 32, 32);
+}
+
 .preview {
   max-height: 80px;
   width: auto;
@@ -384,7 +495,7 @@ button:focus {
   color: #747e8a;
   background-color: #ffffff;
   border-radius: 3px;
-  transition: all 0.25s;
+  transition: all 0.1s;
   text-align: right;
   box-sizing: border-box;
   -moz-box-sizing: border-box;
@@ -417,6 +528,24 @@ button:focus {
   -moz-appearance: textfield;
 }
 
+.input.darkmode {
+  background-color: #1f1f1f;
+  border: 1px solid #494949;
+  color: white;
+}
+
+.input.darkmode:focus {
+  color: #ffffff;
+  outline: none;
+  border: 1px solid #6b6b6b;
+  box-shadow: none;
+}
+
+.input.darkmode:read-only {
+  opacity: 0.7;
+  color: white;
+}
+
 .formtable {
   width: 100%;
 }
@@ -433,6 +562,10 @@ button:focus {
   text-shadow: none;
 }
 
+.subhead.darkmode {
+  color: white;
+}
+
 .vertical {
   margin-bottom: 2px;
 }
@@ -444,12 +577,20 @@ button:focus {
   text-shadow: none;
 }
 
+.statsheader.darkmode {
+  color: white;
+}
+
 .stats {
   margin: 0px;
   margin-bottom: 20px;
   font-size: 18px;
   color: #2c3e50;
   text-shadow: none;
+}
+
+.stats.darkmode {
+  color: white;
 }
 
 .inputarea {
@@ -491,6 +632,20 @@ button:focus {
   cursor: pointer;
 }
 
+.tab.darkmode {
+  color: white;
+}
+
+.tab.show.darkmode, .tab.show.darkmode:hover {
+  border-bottom: 2px solid #ffffff;
+  color: #ffffff;
+  cursor: auto;
+}
+
+.tab.darkmode:hover {
+  color: rgb(226, 226, 226);
+}
+
 .toptab {
   background-color: transparent;
   color: white;
@@ -512,8 +667,20 @@ button:focus {
   cursor: pointer;
 }
 
+.toptab.darkmode:hover {
+  background: #2e2e2e;
+}
+
 #export:hover .toptab {
   background-color: #34495e;
+}
+
+#export.darkmode:hover .toptab {
+  background: #2e2e2e;
+}
+
+#mode {
+  float: right;
 }
 
 #exportinput {
@@ -527,6 +694,10 @@ button:focus {
   margin: 0px;
   width: 135px;
   border: 0px;
+}
+
+#exportinput.darkmode {
+  background: #161616;
 }
 
 #export {
@@ -580,4 +751,11 @@ button:focus {
   border-radius: 5px;
   min-height: 0;
   overflow: hidden;
+}
+
+#info.darkmode {
+  background: #161616;
+  border: 1px solid rgb(58, 58, 58);
+  box-shadow: none;
+  color: white;
 }

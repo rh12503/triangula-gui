@@ -1,7 +1,6 @@
 import "regenerator-runtime/runtime";
 import 'core-js/stable';
 import "./main.css";
-import logo from "./assets/logo.svg";
 
 const runtime = require('@wailsapp/runtime');
 
@@ -27,6 +26,28 @@ function selectButtonInGroup(event, selector) {
     }
 
     event.currentTarget.classList.add("selected");
+}
+
+function setLightMode() {
+    var all = document.getElementsByTagName("*");
+
+    for (var i = 0, max = all.length; i < max; i++) {
+        all[i].classList.remove("darkmode")
+    }
+    document.getElementById("mode").innerHTML = `
+    <svg xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 24 24" height="24px" viewBox="0 0 24 24" width="24px" fill="#000000"><rect fill="none" height="24" width="24"/><path d="M12,3c-4.97,0-9,4.03-9,9s4.03,9,9,9s9-4.03,9-9c0-0.46-0.04-0.92-0.1-1.36c-0.98,1.37-2.58,2.26-4.4,2.26 c-2.98,0-5.4-2.42-5.4-5.4c0-1.81,0.89-3.42,2.26-4.4C12.92,3.04,12.46,3,12,3L12,3z"/></svg>
+    `
+}
+
+function setDarkMode() {
+    var all = document.getElementsByTagName("*");
+
+    for (var i = 0, max = all.length; i < max; i++) {
+        all[i].classList.add("darkmode")
+    }
+    document.getElementById("mode").innerHTML = `
+    <svg xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 24 24" height="24px" viewBox="0 0 24 24" width="24px" fill="#000000"><rect fill="none" height="24" width="24"/><path d="M12,7c-2.76,0-5,2.24-5,5s2.24,5,5,5s5-2.24,5-5S14.76,7,12,7L12,7z M2,13l2,0c0.55,0,1-0.45,1-1s-0.45-1-1-1l-2,0 c-0.55,0-1,0.45-1,1S1.45,13,2,13z M20,13l2,0c0.55,0,1-0.45,1-1s-0.45-1-1-1l-2,0c-0.55,0-1,0.45-1,1S19.45,13,20,13z M11,2v2 c0,0.55,0.45,1,1,1s1-0.45,1-1V2c0-0.55-0.45-1-1-1S11,1.45,11,2z M11,20v2c0,0.55,0.45,1,1,1s1-0.45,1-1v-2c0-0.55-0.45-1-1-1 C11.45,19,11,19.45,11,20z M5.99,4.58c-0.39-0.39-1.03-0.39-1.41,0c-0.39,0.39-0.39,1.03,0,1.41l1.06,1.06 c0.39,0.39,1.03,0.39,1.41,0s0.39-1.03,0-1.41L5.99,4.58z M18.36,16.95c-0.39-0.39-1.03-0.39-1.41,0c-0.39,0.39-0.39,1.03,0,1.41 l1.06,1.06c0.39,0.39,1.03,0.39,1.41,0c0.39-0.39,0.39-1.03,0-1.41L18.36,16.95z M19.42,5.99c0.39-0.39,0.39-1.03,0-1.41 c-0.39-0.39-1.03-0.39-1.41,0l-1.06,1.06c-0.39,0.39-0.39,1.03,0,1.41s1.03,0.39,1.41,0L19.42,5.99z M7.05,18.36 c0.39-0.39,0.39-1.03,0-1.41c-0.39-0.39-1.03-0.39-1.41,0l-1.06,1.06c-0.39,0.39-0.39,1.03,0,1.41s1.03,0.39,1.41,0L7.05,18.36z"/></svg>
+    `
 }
 
 function setPaused() {
@@ -92,7 +113,28 @@ async function start() {
     app.innerHTML = `
 	    <div id="side">
             <div id="title" class="noselect">
-                <image id="logo" src="${logo}"/>
+                <svg id="logo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 87.024">
+                    <g>
+                        <path
+                            d="M24.183,66.186a20.531,20.531,0,0,1-6.336,6.336L2.315,81.489c-2.209,1.275-2.973.511-1.7-1.7L45.824,1.49c1.276-2.209,2.319-1.929,2.319.622V20.046A20.506,20.506,0,0,1,45.824,28.7Z"
+                            transform="translate(0 0)" />
+                        <path
+                            d="M71.643,73.418A20.521,20.521,0,0,1,80.3,75.737l15.534,8.968c2.21,1.275,1.93,2.319-.621,2.319H4.789c-2.551,0-2.83-1.044-.621-2.319L19.7,75.737a20.521,20.521,0,0,1,8.655-2.319Z"
+                            transform="translate(0 0)" />
+                        <path
+                            d="M82.15,72.521a20.517,20.517,0,0,1-6.336-6.335L54.173,28.7a20.506,20.506,0,0,1-2.319-8.655V2.112c0-2.551,1.043-2.831,2.319-.622l45.209,78.3c1.276,2.209.512,2.973-1.7,1.7Z"
+                            transform="translate(0 0)" />
+                        <path
+                            d="M48.143,50.392a8.91,8.91,0,0,1-4.017,6.957l-11.82,6.824c-2.21,1.276-2.973.512-1.7-1.7L45.824,36.122c1.276-2.209,2.319-1.93,2.319.621Z"
+                            transform="translate(0 0)" />
+                        <path
+                            d="M45.982,60.562a8.907,8.907,0,0,1,8.033,0l11.821,6.826c2.209,1.276,1.93,2.32-.621,2.32H34.782c-2.551,0-2.83-1.044-.621-2.32Z"
+                            transform="translate(0 0)" />
+                        <path
+                            d="M69.389,62.475c1.275,2.21.511,2.974-1.7,1.7l-11.82-6.824a8.91,8.91,0,0,1-4.017-6.957V36.743c0-2.551,1.043-2.83,2.319-.621Z"
+                            transform="translate(0 0)" />
+                    </g>
+                </svg>
                 <span id="titlecontent">Triangula</span>
             </div>
             <hr>
@@ -194,7 +236,6 @@ async function start() {
                 <div id="export">
                     <button class="toptab noselect">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24">
-
                             <path d="M0 0h24v24H0z" fill="none" />
                             <path d=" M19 12v7H5v-7H3v7c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-7h-2zm-6 .67l2.59-2.58L17
                                 11.5l-5 5-5-5 1.41-1.41L11 12.67V3h2z" fill="white" />
@@ -221,6 +262,7 @@ async function start() {
                         <button class="noselect" type="button" id="save" disabled>Save</button>
                     </div>
                 </div>
+                <button class="toptab noselect" id="mode"></button>
             </div>
             <div id="renderarea">
                 <canvas id="render"></canvas>
@@ -253,6 +295,9 @@ async function start() {
 
     wails.Events.On("paused", () => setPaused())
     wails.Events.On("resumed", () => setResumed())
+
+    wails.Events.On("darkmode", () => setDarkMode())
+    wails.Events.On("lightmode", () => setLightMode())
 
     updateCanvasSize(1);
 
@@ -319,8 +364,10 @@ async function start() {
 
     document.getElementById("pause").onclick = () => backend.Runner.TogglePause();
 
+    document.getElementById("mode").onclick = () => backend.Runner.ToggleMode();
 
     setResumed();
+    setLightMode();
 
     document.getElementById("png").onclick = function (event) {
         selectButtonInGroup(event, "format");
@@ -356,7 +403,7 @@ async function start() {
 
         let cW = canvas.width;
         let cH = canvas.height;
-        var ctx = canvas.getContext("2d", {alpha: false});
+        var ctx = canvas.getContext("2d", { alpha: false });
 
         if (window.devicePixelRatio > 1) {
             var canvasWidth = canvas.width;

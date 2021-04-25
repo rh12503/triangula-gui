@@ -45,11 +45,13 @@ type Runner struct {
 
 	image     image.Image // The image selected
 	normImage image2.Data // The image data used by the algorithm
+
+	lightMode bool // If light mode is set
 }
 
 func (r *Runner) WailsInit(runtime *wails.Runtime) error {
 	r.runtime = runtime
-
+	r.lightMode = true
 	return nil
 }
 
@@ -253,6 +255,17 @@ func (r *Runner) TogglePause() {
 	} else {
 		r.StartAlgorithm()
 		r.runtime.Events.Emit("resumed")
+	}
+}
+
+// ToggleMode toggles light/dark mode
+func (r *Runner) ToggleMode() {
+	r.lightMode = !r.lightMode
+
+	if r.lightMode {
+		r.runtime.Events.Emit("lightmode")
+	} else {
+		r.runtime.Events.Emit("darkmode")
 	}
 }
 
