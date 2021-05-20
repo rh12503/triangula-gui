@@ -1,6 +1,7 @@
 import "regenerator-runtime/runtime";
 import 'core-js/stable';
 import "./main.css";
+import html from "./app.html";
 
 const runtime = require('@wailsapp/runtime');
 
@@ -76,7 +77,9 @@ function run() {
     let threads = parseInt(document.getElementById("threads").value);
     let frametime = parseInt(document.getElementById("frametime").value);
 
-    backend.Runner.Run(mRate, mAmount, points, population, cutoff, blockSize, cacheSize, threads, frametime);
+    let type = parseInt(document.getElementById("shapecontainer").getElementsByClassName("selected")[0].dataset.shape)
+
+    backend.Runner.Run(type, mRate, mAmount, points, population, cutoff, blockSize, cacheSize, threads, frametime);
 }
 
 function stop() {
@@ -103,165 +106,8 @@ async function start() {
     app.style.width = '100%';
     app.style.height = '100%';
 
-    app.innerHTML = `
-	    <div id="side">
-            <div id="title" class="noselect">
-                <svg id="logo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 87.024">
-                    <g>
-                        <path
-                            d="M24.183,66.186a20.531,20.531,0,0,1-6.336,6.336L2.315,81.489c-2.209,1.275-2.973.511-1.7-1.7L45.824,1.49c1.276-2.209,2.319-1.929,2.319.622V20.046A20.506,20.506,0,0,1,45.824,28.7Z"
-                            transform="translate(0 0)" />
-                        <path
-                            d="M71.643,73.418A20.521,20.521,0,0,1,80.3,75.737l15.534,8.968c2.21,1.275,1.93,2.319-.621,2.319H4.789c-2.551,0-2.83-1.044-.621-2.319L19.7,75.737a20.521,20.521,0,0,1,8.655-2.319Z"
-                            transform="translate(0 0)" />
-                        <path
-                            d="M82.15,72.521a20.517,20.517,0,0,1-6.336-6.335L54.173,28.7a20.506,20.506,0,0,1-2.319-8.655V2.112c0-2.551,1.043-2.831,2.319-.622l45.209,78.3c1.276,2.209.512,2.973-1.7,1.7Z"
-                            transform="translate(0 0)" />
-                        <path
-                            d="M48.143,50.392a8.91,8.91,0,0,1-4.017,6.957l-11.82,6.824c-2.21,1.276-2.973.512-1.7-1.7L45.824,36.122c1.276-2.209,2.319-1.93,2.319.621Z"
-                            transform="translate(0 0)" />
-                        <path
-                            d="M45.982,60.562a8.907,8.907,0,0,1,8.033,0l11.821,6.826c2.209,1.276,1.93,2.32-.621,2.32H34.782c-2.551,0-2.83-1.044-.621-2.32Z"
-                            transform="translate(0 0)" />
-                        <path
-                            d="M69.389,62.475c1.275,2.21.511,2.974-1.7,1.7l-11.82-6.824a8.91,8.91,0,0,1-4.017-6.957V36.743c0-2.551,1.043-2.83,2.319-.621Z"
-                            transform="translate(0 0)" />
-                    </g>
-                </svg>
-                <span id="titlecontent">Triangula</span>
-            </div>
-            <hr>
-            <div class="controls">
-                <button class="noselect" type="button" id="select">Drop an image, or click to select</button>
-            </div>
-            <div id="info">
-                <div id="tabs">
-                    <button class="tab show noselect" id="configtab">Basic</button>
-                    <button class="tab noselect" id="advancedtab">Advanced</button>
-                    <button class="tab noselect" id="statstab">Statistics</button>
-                </div>
+    app.innerHTML = html
 
-                <div class="panel show noselect" id="inputpanel">
-
-
-                    <div class="noselect inputs">
-                        <table class="formtable">
-                            <tr>
-                                <td><label class="subhead">Points</label></td>
-                                <td><input type="number" id="points" class="input" value="300" min="0" step="5"></td>
-                            </tr>
-
-                            <tr>
-                                <td><label class="subhead">Mutations</label></td>
-                                <td><input type="number" id="mutations" class="input" value="2" min="0" step="1"></td>
-                            </tr>
-                            <tr>
-                                <td><label class="subhead">Variation</label></td>
-                                <td><input type="number" id="mutationamount" class="input" value="0.3" min="0" max="1"
-                                        step="0.05"></td>
-                            </tr>
-                            <tr>
-                                <td><label class="subhead">Population</label></td>
-                                <td><input type="number" id="population" class="input" value="400" min="0" step="10">
-                                </td>
-                            </tr>
-                            <tr>
-                                <td><label class="subhead">Cutoff</label></td>
-                                <td><input type="number" id="cutoff" class="input" value="5" min="0" step="1"></td>
-                            </tr>
-                        </table>
-                    </div>
-                </div>
-
-                <div class="panel noselect" id="advancedpanel">
-                    <div class="noselect inputs">
-                        <table class="formtable">
-                            <tr>
-                                <td>
-                                    <p class="subhead">Block Size</p>
-                                </td>
-                                <td><input type="number" id="blocksize" class="input" value="5" min="0" step="1"></td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <p class="subhead">Cache Size</p>
-                                </td>
-                                <td><input type="number" id="cachesize" class="input" value="22" min="0" step="1"></td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <p class="subhead">Threads</p>
-                                </td>
-                                <td><input type="number" id="threads" class="input" value="0" min="0" step="1"></td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <p class="subhead">Time per Frame</p>
-                                </td>
-                                <td><input type="number" id="frametime" class="input" value="250" min="0" step="50">
-                                </td>
-                            </tr>
-                        </table>
-                    </div>
-                </div>
-
-
-                <div class="panel noselect" id="statspanel">
-                    <div class="noselect inputs">
-                        <p class="statsheader">Generation</p>
-                        <p id="generation" class="stats selectable">0</p>
-                        <p class="statsheader">Fitness</p>
-                        <p id="fitness" class="stats selectable">0.0%</p>
-                        <p class="statsheader">Time</p>
-                        <p id="time" class="stats selectable">0.00ms</p>
-                    </div>
-                </div>
-            </div>
-
-            <div id="sidebottom">
-                <button class="noselect" type="button" id="run" disabled>Start</button>
-            </div>
-        </div>
-        <div id="main">
-            <div id="topbar">
-                <button class="toptab noselect" id="pause" disabled>
-                </button>
-                <div id="export">
-                    <button class="toptab noselect">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24">
-                            <path d="M0 0h24v24H0z" fill="none" />
-                            <path d=" M19 12v7H5v-7H3v7c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-7h-2zm-6 .67l2.59-2.58L17
-                                11.5l-5 5-5-5 1.41-1.41L11 12.67V3h2z" fill="white" />
-                        </svg>
-                    </button>
-                    <div id="exportinput">
-                        <p class="subhead noselect vertical">Format</p>
-                        <div class="buttongroup">
-                            <button id="png" class="noselect buttoningroup selected format" type="button">PNG</button>
-                            <button id="svg" class="noselect buttoningroup format" type="button">SVG</button>
-                        </div>
-                        <p class="subhead noselect vertical">Scale</p>
-                        <div class="inputarea">
-                            <input type="number" id="scale" class="input" value="1" min="0" step="1">
-                        </div>
-
-                        <p class="subhead noselect vertical">Effect</p>
-                        <div id="effect" class="buttongroup">
-                            <button id="none" class="noselect buttoningroup selected effect" type="button">None</button>
-                            <button id="gradient" class="noselect buttoningroup effect" type="button">Gradient</button>
-                            <button id="split" class="noselect buttoningroup effect" type="button">Split</button>
-                        </div>
-
-                        <button class="noselect" type="button" id="save" disabled>Save</button>
-                    </div>
-                </div>
-                <button class="toptab noselect" id="mode"></button>
-            </div>
-            <div id="renderarea">
-                <canvas id="render"></canvas>
-            </div>
-        </div>
-	`
     wails.Events.On("image", (path, data) => {
         let name = path.replace(/^.*[\\\/]/, '');
         document.getElementById("select").innerHTML = `
@@ -386,6 +232,13 @@ async function start() {
     document.getElementById("gradient").onclick = (event) => selectButtonInGroup(event, "effect");
     document.getElementById("split").onclick = (event) => selectButtonInGroup(event, "effect");
 
+    var shapeButtons = document.getElementsByClassName("shapebutton");
+
+    for (var i = 0; i < shapeButtons.length; i++) {
+        shapeButtons[i].onclick = function (event) {
+            selectButtonInGroup(event, "shapebutton")
+        };
+    }
 
     wails.Events.On("renderData", renderData => {
         let width = renderData.Width;
@@ -415,14 +268,15 @@ async function start() {
 
         ctx.clearRect(0, 0, cW, cH);
 
-        for (let tri of renderData.Data) {
-            let c = tri.Color;
-            let t = tri.Triangle.Points;
+        for (let i in renderData.Polygons) {
+            let c = renderData.Colors[i];
+            let t = renderData.Polygons[i].Points;
             ctx.fillStyle = `rgb(${Math.round(c.R * 255)}, ${Math.round(c.G * 255)}, ${Math.round(c.B * 255)})`;
             ctx.beginPath();
             ctx.moveTo(Math.round(t[0].X * cW), Math.round(t[0].Y * cH));
-            ctx.lineTo(Math.round(t[1].X * cW), Math.round(t[1].Y * cH));
-            ctx.lineTo(Math.round(t[2].X * cW), Math.round(t[2].Y * cH));
+            for (var j = 1; j < t.length; j++) {
+                ctx.lineTo(Math.round(t[j].X * cW), Math.round(t[j].Y * cH));
+            }
             ctx.closePath();
             ctx.fill();
         }

@@ -363,11 +363,6 @@ img[src$=".gif"], img[src$=".png"] {
   color: white;
 }
 
-.darkmode .buttoningroup.selected:active {
-  background-color: #808080;
-  border: 1px solid #808080;
-}
-
 .darkmode .buttoningroup:not(:last-child) {
   border-right: none;
 }
@@ -758,4 +753,75 @@ button:focus {
   border: 1px solid rgb(58, 58, 58);
   box-shadow: none;
   color: white;
+}
+
+#shapediv {
+  margin: 0px;
+  padding: 0px;
+  width: 65px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#shapecontainer {
+  margin: 0px;
+  padding: 0px;
+  display: flex;
+  align-items: center;
+  height: 22px;
+}
+
+.shapebutton {
+  padding: 0px;
+  margin: 0px;
+  background: none;
+  height: 100%;
+  border-radius: 0px;
+}
+
+.shapebutton:first-of-type {
+  padding-right: 11px;
+}
+
+.shapebutton svg {
+  padding: 0px;
+  margin: 0 auto;
+  height: 100%;
+  fill: #747e8a;
+  transition: all 0.2s;
+}
+
+.shapebutton:hover svg {
+  fill: #34495e;
+  border: none;
+  cursor: pointer;
+}
+
+.shapebutton:active svg {
+  fill: #2c3e50;
+}
+
+.shapebutton.selected svg {
+  fill: #34495e;
+}
+
+.darkmode .shapebutton svg {
+  width: 22px;
+  fill: #494949;
+  transition: all 0.2s;
+}
+
+.darkmode .shapebutton:hover svg {
+  fill: #6b6b6b;
+  border: none;
+  cursor: pointer;
+}
+
+.darkmode .shapebutton:active svg {
+  fill: #818181;
+}
+
+.darkmode .shapebutton.selected svg {
+  fill: #6b6b6b;
 }

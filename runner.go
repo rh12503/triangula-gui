@@ -3,15 +3,9 @@ package main
 import (
 	"encoding/base64"
 	"errors"
-	"github.com/RH12503/Triangula-GUI/export"
+	"github.com/RH12503/Triangula-GUI/util"
 	"github.com/RH12503/Triangula/algorithm"
-	"github.com/RH12503/Triangula/algorithm/evaluator"
-	"github.com/RH12503/Triangula/generator"
 	image2 "github.com/RH12503/Triangula/image"
-	"github.com/RH12503/Triangula/mutation"
-	"github.com/RH12503/Triangula/normgeom"
-	"github.com/RH12503/Triangula/render"
-	"github.com/RH12503/Triangula/triangulation"
 	"github.com/wailsapp/wails"
 	"image"
 	"io/ioutil"
@@ -24,9 +18,8 @@ import (
 )
 
 const (
-	none     int = iota
-	gradient int = iota
-	split    int = iota
+	triangulated = iota
+	polygonal    = iota
 )
 
 type Runner struct {
@@ -44,9 +37,11 @@ type Runner struct {
 	frameTime int // The increment between each frame rendered
 
 	image     image.Image // The image selected
-	normImage image2.Data // The image data used by the algorithm
+	pixelData image2.Data // The image data used by the algorithm
 
 	lightMode bool // If light mode is set
+
+	logic Logic
 }
 
 func (r *Runner) WailsInit(runtime *wails.Runtime) error {
@@ -56,7 +51,16 @@ func (r *Runner) WailsInit(runtime *wails.Runtime) error {
 }
 
 // Run runs the algorithm if it is not already running
-func (r *Runner) Run(mutations int, mutationAmount float64, numPoints, population, cutoff, blockSize, cacheSize, threads, frameTime int) {
+func (r *Runner) Run(shape int, mutations int, mutationAmount float64, numPoints, population, cutoff, blockSize, cacheSize, threads, frameTime int) {
+
+	switch shape {
+	case triangulated:
+		r.logic = TriangleLogic{}
+		break
+	case polygonal:
+		r.logic = PolygonLogic{}
+		break
+	}
 
 	if threads != 0 {
 		runtime.GOMAXPROCS(threads)
@@ -69,20 +73,9 @@ func (r *Runner) Run(mutations int, mutationAmount float64, numPoints, populatio
 	if !r.Running() {
 		// Setup algorithm
 		img := image2.ToData(r.image)
-		r.normImage = img
+		r.pixelData = img
 
-		evaluatorFactory := func(n int) evaluator.Evaluator {
-			return evaluator.NewParallel(img, cacheSize, blockSize, n)
-		}
-		var mutator mutation.Method
-		mutator = mutation.NewGaussianMethod(float64(mutations)/float64(numPoints), mutationAmount)
-
-		pointFactory := func() normgeom.NormPointGroup {
-			return generator.RandomGenerator{}.Generate(numPoints)
-		}
-
-		algo := algorithm.NewModifiedGenetic(pointFactory, population, cutoff, evaluatorFactory, mutator)
-		r.algorithm = algo
+		r.algorithm = r.logic.NewAlgorithm(img, mutations, mutationAmount, numPoints, population, cutoff, blockSize, cacheSize)
 
 		r.stopped = false
 		r.frameTime = frameTime
@@ -130,7 +123,7 @@ func (r *Runner) SelectImage() {
 
 	// Obtain the mime type of the image
 	bytes, _ := ioutil.ReadFile(path)
-	format := mimeType(bytes)
+	format := util.MimeType(bytes)
 
 	file.Close()
 
@@ -169,9 +162,7 @@ func (r *Runner) SaveSVG() error {
 	r.tempPauseMutex.Lock()
 	best := r.algorithm.Best().Copy()
 	r.tempPauseMutex.Unlock()
-	err := export.WriteSVG(name, best, r.normImage)
-
-	return err
+	return r.logic.SaveSVG(name, best, r.pixelData)
 }
 
 // SavePNG opens a dialog to save the result of the algorithm to a PNG file
@@ -182,20 +173,11 @@ func (r *Runner) SavePNG(scale float64, effect int) error {
 
 	name := r.runtime.Dialog.SelectSaveFile("Export to PNG", "*.png")
 
-	var err error
 	r.tempPauseMutex.Lock()
 	best := r.algorithm.Best().Copy()
 	r.tempPauseMutex.Unlock()
 
-	if effect == none {
-		err = export.WritePNG(name, best, r.normImage, scale)
-	} else if effect == gradient {
-		err = export.WriteEffectPNG(name, best, r.normImage, scale, true)
-	} else if effect == split {
-		err = export.WriteEffectPNG(name, best, r.normImage, scale, false)
-	}
-
-	return err
+	return r.logic.SavePNG(name, best, r.pixelData, scale, effect)
 }
 
 // StartAlgorithm starts the algorithm if it isn't already started
@@ -204,18 +186,13 @@ func (r *Runner) StartAlgorithm() {
 	r.running = true
 	r.runningMutex.Unlock()
 	go func() {
-		out:
+	out:
 		for {
-			w, h := r.normImage.Size()
-			triangles := triangulation.Triangulate(r.algorithm.Best(), w, h)
-			triangleData := render.TrianglesOnImage(triangles, r.normImage)
-
+			r.tempPauseMutex.Lock()
+			best := r.algorithm.Best().Copy()
+			r.tempPauseMutex.Unlock()
 			// Send rendering data to the frontend
-			r.runtime.Events.Emit("renderData", RenderData{
-				Width:  w,
-				Height: h,
-				Data:   triangleData,
-			})
+			r.runtime.Events.Emit("renderData", r.logic.RenderData(best, r.pixelData))
 			r.runtime.Events.Emit("stats", r.algorithm.Stats())
 
 			ti := time.Now()
@@ -267,27 +244,4 @@ func (r *Runner) ToggleMode() {
 	} else {
 		r.runtime.Events.Emit("darkmode")
 	}
-}
-
-// RenderData is sent to the frontend for rendering
-type RenderData struct {
-	Width, Height int
-	Data          []render.TriangleData
-}
-
-//https://stackoverflow.com/a/25959527/15283541
-var types = map[string]string{
-	"\xff\xd8\xff":      "image/jpeg",
-	"\x89PNG\r\n\x1a\n": "image/png",
-}
-
-func mimeType(incipit []byte) string {
-	incipitStr := string(incipit)
-	for magic, mime := range types {
-		if strings.HasPrefix(incipitStr, magic) {
-			return mime
-		}
-	}
-
-	return ""
 }

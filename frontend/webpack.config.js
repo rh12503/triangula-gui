@@ -44,6 +44,10 @@ module.exports = {
 					loader: 'babel-loader',
 				},
 			},
+			{
+				test: /\.html$/i,
+				use: 'raw-loader',
+			},
 		]
 	},
 	plugins: [

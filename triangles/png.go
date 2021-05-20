@@ -1,7 +1,7 @@
-// Package export provides utility functions for saving a result from the algorithm to a file,
+// Package triangles provides utility functions for saving a result from the algorithm to a file,
 // as well as different filters that can be applied to the results.
 
-package export
+package triangles
 
 import (
 	"github.com/RH12503/Triangula/image"

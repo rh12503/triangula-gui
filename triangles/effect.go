@@ -1,6 +1,7 @@
-package export
+package triangles
 
 import (
+	"github.com/RH12503/Triangula-GUI/util"
 	color2 "github.com/RH12503/Triangula/color"
 	"github.com/RH12503/Triangula/geom"
 	"github.com/RH12503/Triangula/image"
@@ -17,8 +18,8 @@ import (
 func WriteEffectPNG(filename string, points normgeom.NormPointGroup, img image.Data, pixelScale float64, gradient bool) error {
 	imageW, imageH := img.Size()
 
-	w := multAndRound(imageW, pixelScale)
-	h := multAndRound(imageH, pixelScale)
+	w := util.MultAndRound(imageW, pixelScale)
+	h := util.MultAndRound(imageH, pixelScale)
 
 	dc := gg.NewContext(w, h)
 
@@ -29,7 +30,7 @@ func WriteEffectPNG(filename string, points normgeom.NormPointGroup, img image.D
 	triangles := triangulation.Triangulate(points, imageW, imageH)
 	triangleData := render.TrianglesOnImage(triangles, img)
 
-	for i, _ := range triangleData {
+	for i := range triangleData {
 		tri := triangles[i]
 		points := tri.Points
 
@@ -48,7 +49,7 @@ func WriteEffectPNG(filename string, points normgeom.NormPointGroup, img image.D
 			xx3 := x - points[2].X
 			yy3 := y - points[2].Y
 
-			// Calculate Barymetric coordinates for filling gradients
+			// Calculate Barycentric coordinates for filling gradients
 			l0 := math.Max(float64(y2y3*xx3+x3x2*yy3)/dcol, 0)
 			l1 := math.Max(float64(y3y1*xx3+x1x3*yy3)/dcol, 0)
 
@@ -73,24 +74,24 @@ func WriteEffectPNG(filename string, points normgeom.NormPointGroup, img image.D
 
 		// Prevent blank triangles
 		if avg0.Count() == 0 {
-			c0 = img.RGBAt(min(points[0].X, imageW-1), min(points[0].Y, imageH-1))
+			c0 = img.RGBAt(util.Min(points[0].X, imageW-1), util.Min(points[0].Y, imageH-1))
 		}
 
 		if avg1.Count() == 0 {
-			c1 = img.RGBAt(min(points[1].X, imageW-1), min(points[1].Y, imageH-1))
+			c1 = img.RGBAt(util.Min(points[1].X, imageW-1), util.Min(points[1].Y, imageH-1))
 		}
 
 		if avg2.Count() == 0 {
-			c2 = img.RGBAt(min(points[2].X, imageW-1), min(points[2].Y, imageH-1))
+			c2 = img.RGBAt(util.Min(points[2].X, imageW-1), util.Min(points[2].Y, imageH-1))
 		}
 
 		scaledTri := geom.NewTriangle(
-			multAndRound(points[0].X, pixelScale),
-			multAndRound(points[0].Y, pixelScale),
-			multAndRound(points[1].X, pixelScale),
-			multAndRound(points[1].Y, pixelScale),
-			multAndRound(points[2].X, pixelScale),
-			multAndRound(points[2].Y, pixelScale),
+			util.MultAndRound(points[0].X, pixelScale),
+			util.MultAndRound(points[0].Y, pixelScale),
+			util.MultAndRound(points[1].X, pixelScale),
+			util.MultAndRound(points[1].Y, pixelScale),
+			util.MultAndRound(points[2].X, pixelScale),
+			util.MultAndRound(points[2].Y, pixelScale),
 		)
 
 		rasterize.DDATriangle(scaledTri, func(x, y int) {
@@ -104,9 +105,9 @@ func WriteEffectPNG(filename string, points normgeom.NormPointGroup, img image.D
 
 			if gradient {
 				dc.SetColor(color.RGBA{
-					R: uint8(scale(math.Min(c0.R*l0+c1.R*l1+c2.R*l2, 1), 255)),
-					G: uint8(scale(math.Min(c0.G*l0+c1.G*l1+c2.G*l2, 1), 255)),
-					B: uint8(scale(math.Min(c0.B*l0+c1.B*l1+c2.B*l2, 1), 255)),
+					R: uint8(util.Scale(math.Min(c0.R*l0+c1.R*l1+c2.R*l2, 1), 255)),
+					G: uint8(util.Scale(math.Min(c0.G*l0+c1.G*l1+c2.G*l2, 1), 255)),
+					B: uint8(util.Scale(math.Min(c0.B*l0+c1.B*l1+c2.B*l2, 1), 255)),
 					A: 255,
 				})
 			} else {
@@ -114,23 +115,23 @@ func WriteEffectPNG(filename string, points normgeom.NormPointGroup, img image.D
 
 				if max == l0 {
 					dc.SetColor(color.RGBA{
-						R: uint8(scale(c0.R, 255)),
-						G: uint8(scale(c0.G, 255)),
-						B: uint8(scale(c0.B, 255)),
+						R: uint8(util.Scale(c0.R, 255)),
+						G: uint8(util.Scale(c0.G, 255)),
+						B: uint8(util.Scale(c0.B, 255)),
 						A: 255,
 					})
 				} else if max == l1 {
 					dc.SetColor(color.RGBA{
-						R: uint8(scale(c1.R, 255)),
-						G: uint8(scale(c1.G, 255)),
-						B: uint8(scale(c1.B, 255)),
+						R: uint8(util.Scale(c1.R, 255)),
+						G: uint8(util.Scale(c1.G, 255)),
+						B: uint8(util.Scale(c1.B, 255)),
 						A: 255,
 					})
 				} else {
 					dc.SetColor(color.RGBA{
-						R: uint8(scale(c2.R, 255)),
-						G: uint8(scale(c2.G, 255)),
-						B: uint8(scale(c2.B, 255)),
+						R: uint8(util.Scale(c2.R, 255)),
+						G: uint8(util.Scale(c2.G, 255)),
+						B: uint8(util.Scale(c2.B, 255)),
 						A: 255,
 					})
 				}
