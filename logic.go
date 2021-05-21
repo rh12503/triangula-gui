@@ -15,6 +15,7 @@ import (
 	"github.com/RH12503/Triangula/polygonation"
 	"github.com/RH12503/Triangula/render"
 	"github.com/RH12503/Triangula/triangulation"
+	"strings"
 )
 
 const (
@@ -34,16 +35,26 @@ type TriangleLogic struct {
 }
 
 func (t TriangleLogic) SaveSVG(file string, points normgeom.NormPointGroup, img image.Data) error {
-	return triangles.WriteSVG(file, points, img)
+	filename := file
+	if !strings.HasSuffix(filename, ".svg") {
+		filename += ".svg"
+	}
+
+	return triangles.WriteSVG(filename, points, img)
 }
 
 func (t TriangleLogic) SavePNG(file string, points normgeom.NormPointGroup, img image.Data, scale float64, effect int) error {
+	filename := file
+	if !strings.HasSuffix(filename, ".png") {
+		filename += ".png"
+	}
+
 	if effect == none {
-		return triangles.WritePNG(file, points, img, scale)
+		return triangles.WritePNG(filename, points, img, scale)
 	} else if effect == gradient {
-		return triangles.WriteEffectPNG(file, points, img, scale, true)
+		return triangles.WriteEffectPNG(filename, points, img, scale, true)
 	} else if effect == split {
-		return triangles.WriteEffectPNG(file, points, img, scale, false)
+		return triangles.WriteEffectPNG(filename, points, img, scale, false)
 	}
 
 	return errors.New("invalid effect")
@@ -90,16 +101,26 @@ type PolygonLogic struct {
 }
 
 func (p PolygonLogic) SaveSVG(file string, points normgeom.NormPointGroup, img image.Data) error {
-	return polygons.WriteSVG(file, points, img)
+	filename := file
+	if !strings.HasSuffix(filename, ".svg") {
+		filename += ".svg"
+	}
+
+	return polygons.WriteSVG(filename, points, img)
 }
 
 func (p PolygonLogic) SavePNG(file string, points normgeom.NormPointGroup, img image.Data, scale float64, effect int) error {
+	filename := file
+	if !strings.HasSuffix(filename, ".png") {
+		filename += ".png"
+	}
+
 	if effect == none {
-		return polygons.WritePNG(file, points, img, scale)
+		return polygons.WritePNG(filename, points, img, scale)
 	} else if effect == gradient {
-		return polygons.WriteEffectPNG(file, points, img, scale, true)
+		return polygons.WriteEffectPNG(filename, points, img, scale, true)
 	} else if effect == split {
-		return polygons.WriteEffectPNG(file, points, img, scale, false)
+		return polygons.WriteEffectPNG(filename, points, img, scale, false)
 	}
 
 	return errors.New("invalid effect")
